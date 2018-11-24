@@ -1,13 +1,13 @@
 const express = require("express");
 const config = require("./config");
-const VkService = require("./service");
 
 const app = express();
+
+const VkService = require("./service");
 const vkService = new VkService(config.accessToken);
 
 app.get('/', async function (req, res) {
-    const response = await vkService.newsFeedSearch();
-    res.send(response);
+    res.send("OK");
 });
 
 app.listen(config.port, function () {
