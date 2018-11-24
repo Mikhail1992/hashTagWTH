@@ -100,7 +100,10 @@ class VkService {
             const profile = profiles.find(p => p.id = item.owner_id);
             return `${profile.first_name} ${profile.last_name}`
         } else {
-            return groups.find(g => g.id === Math.abs(g.id)).name;
+            const group = groups.find(g => g.id === Math.abs(g.id));
+            if (group) {
+                return group.name;
+            }
         }
     }
 
@@ -113,7 +116,8 @@ class VkService {
             latitude: config.minsk_latitude,
             extended: 1,
             fields: "first_name,last_name",
-            count: config.vk_max_count
+            count: config.vk_max_count,
+            start_time: 1543017600
         }
     }
 }

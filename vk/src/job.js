@@ -9,7 +9,9 @@ const job = async () => {
         const db = client.db(config.db.name);
         vkService.newsFeedSearch((data) => {
             db.collection("vk").insertMany(data, {}, (err) => {
-                console.log(err);
+                if (err) {
+                    console.log(err);
+                }
             });
         });
     });
