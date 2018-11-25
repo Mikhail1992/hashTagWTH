@@ -12,6 +12,7 @@ import 'leaflet.heat/dist/leaflet-heat.js';
 import './css/app.less';
 
 import { consumeTemplates, instantiateTemplate } from './dom/templates.js';
+import { binding as domBinding } from './dom/binding.js';
 
 onDomReady(function() {
 	let map = L.map('map').setView([53.9, 27.555], 12);
@@ -24,19 +25,15 @@ onDomReady(function() {
 
 	let cardsContainerEl = document.querySelector('.x-main-root .x-panel > .cards-container');
 
-	for (let i = 0; i < 5; i++) {
-		let cardEl = instantiateTemplate('main', 'post_card');
-
-		cardsContainerEl.appendChild(cardEl);
-	}
-
 	(async function() {
 		let response = await fetch('http://localhost:3000/locations.json');
 		let locations = await response.json();
 
 		var markers = L.markerClusterGroup();
 		
-		locations.forEach(function({lat, lon, img, url}) {
+		locations.forEach(function(opts) {
+			let {lat, lon, img, url} = opts;
+
 			let markerOptions = {};
 
 			if (img) {
@@ -49,6 +46,8 @@ onDomReady(function() {
 			}
 
 			let marker = L.marker(new L.LatLng(lat, lon), markerOptions);
+
+			marker.__hashTagData = opts;
 
 			if (img) {
 				let html = '<div class="x-post-popup">';
@@ -68,6 +67,24 @@ onDomReady(function() {
 		});
 
 		map.addLayer(markers);
+
+		markers.on('clusterclick', cluster => {
+			let arr = cluster.layer.getAllChildMarkers().map(x => x.__hashTagData);
+
+			cardsContainerEl.innerHTML = '';
+
+			arr.forEach(function({ img }) {
+				let cardEl = instantiateTemplate('main', 'post_card');
+
+				let binding = domBinding(cardEl, {
+					photo: img
+				});
+
+				//binding.photoEl.style.backgroundImage = 'url("' + img + '")';
+
+				cardsContainerEl.appendChild(cardEl);
+			});
+		});
 
 		let heatPoints = [];
 

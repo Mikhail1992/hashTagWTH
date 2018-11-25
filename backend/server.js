@@ -11,11 +11,6 @@ const app = express();
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
-	/*
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-			"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-	*/
 });
 
 let locations = null;
@@ -57,8 +52,6 @@ async function onConnected({db}) {
 
 	await processInstagram({db, locations});
 	//await processTwitter({db, locations});
-
-	//fs.writeFileSync(path.join(__dirname, 'locations.json'), JSON.stringify(locations));
 }
 
 async function processInstagram({db, locations}) {
