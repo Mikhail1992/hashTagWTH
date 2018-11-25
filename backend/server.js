@@ -61,7 +61,16 @@ async function processInstagram({db, locations}) {
 		//date: { $gt: '2018-11-23T20:50:29Z' }
 	}).sort({ date: -1 });
 
+	let total = await cursor.count();
+
+	console.log('total', total);
+
+	let index = 0;
+	let lastIndex = 0;
+
 	await cursor.forEach(function(doc) {
+		index++;
+
 		if (!doc) return;
 		if (!doc.url) return;
 
@@ -70,10 +79,16 @@ async function processInstagram({db, locations}) {
 
 		if (!isFinite(lat) || !isFinite(lon)) return;
 
+		let hashtags = parseHashTags(doc.text);
+
+		if (!Array.isArray(hashtags)) return;
+
 		let obj = {
 			lat: lat,
 			lon: lon,
-			img: doc.url
+			img: doc.url,
+			text: doc.text,
+			hashtags: hashtags
 		};
 
 		if (doc.shortcode) {
@@ -81,6 +96,11 @@ async function processInstagram({db, locations}) {
 		}
 
 		locations.push(obj);
+
+		if (index - lastIndex >= 100) {
+			lastIndex = index;
+			console.log('processing', index);
+		}
 	});
 }
 
@@ -104,4 +124,79 @@ async function processTwitter({db, locations}) {
 			lon: lon
 		});
 	});
+}
+
+function isBadHashTag(tag) {
+	tag = tag.toLowerCase();
+
+	switch (tag) {
+	case 'новаяколлекция':
+	case 'обувьженская':
+	case 'скидки':
+	case 'гелиевыешарыминск':
+	case 'вдобрыеруки':
+	case 'маникюрминск':
+	case 'маникюр':
+	case 'тцзеркало':
+	case 'салонкрасоты':
+	case 'ресницы':
+	case 'окраскастрижкаминск':
+	case 'укладкаволос':
+	case 'букетминск':
+	case 'минскназаказ':
+	case 'хлопокминск':
+	case 'постельноебелье':
+	case 'скидкиминск':
+	case 'уггиминск':
+	case 'минскшоппинг':
+	case 'заказминск':
+	case 'животныеминск':
+	case 'подаркиминск':
+	case 'подарочныйнабор':
+	case 'одеждаминск':
+	case 'маскидлясна':
+	case 'макияж':
+	case 'джинсыминск':
+	case 'ногтиминск':
+	case 'женскаяодежда':
+	case 'женскаяобувь':
+	case 'украшенияминск':
+	case 'бровиминск':
+	case 'белорусскиедизайнеры':
+	case 'модаминск':
+	case 'nemiga3':
+	case 'немига3':
+	case 'shopping':
+	case 'секондминск':
+	case 'topfashioninnaвналичии':
+	case 'курткаминск':
+	case 'пеньюар':
+	case 'репетиторминск':
+	case 'minskmodel':
+	case 'линзыбеларусь':
+	case 'немигаминск':
+	case 'тцнемига3':
+	case 'моднаяодежда':
+		return true;
+		break;
+	default:
+		return false;
+	}
+}
+
+function parseHashTags(text) {
+	let regexp = /#([^\s#]+)/g;
+
+	let result = [];
+
+	let match;
+	while (match = regexp.exec(text)) {
+		let tag = match[1];
+
+		if (isBadHashTag(tag)) return null;
+
+		result.push(tag);
+	}
+
+	return result;
 }

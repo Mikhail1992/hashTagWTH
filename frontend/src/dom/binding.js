@@ -34,6 +34,13 @@ function doBinding(el, options, binding) {
 			el.innerHTML = html;
 		});
 
+		handleAttribute('data-href', function(el, key) {
+			var href = options[key];
+			if (!href) return;
+
+			el.setAttribute('href', href);
+		});
+
 		handleAttribute('data-img-src', function(el, key) {
 			var url = options[key];
 			if (!url) url = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty pixel
