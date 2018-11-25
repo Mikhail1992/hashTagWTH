@@ -32,8 +32,7 @@ onDomReady(function() {
 		var markers = L.markerClusterGroup();
 
 		locations.forEach(function(opts) {
-			let {lat, lon, img, url} = opts;
-
+			let {lat, lon, img, url, date} = opts;
 			let markerOptions = {};
 
 			if (img) {
@@ -75,7 +74,9 @@ onDomReady(function() {
 
 			cardsContainerEl.innerHTML = '';
 
-			arr.forEach(function({ img, url, text, hashtags }) {
+			arr.sort((a, b) => {
+				return new Date(b.date).getTime() - new Date(a.date).getTime();
+            }).forEach(function({ img, url, text, hashtags }) {
 				let cardEl = instantiateTemplate('main', 'post_card');
 
 				let binding = domBinding(cardEl, {

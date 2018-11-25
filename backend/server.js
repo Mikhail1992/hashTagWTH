@@ -56,7 +56,7 @@ async function onConnected({db}) {
 
 async function processInstagram({db, locations}) {
 	let instagramCollection = db.collection('instPosts');
-	
+
 	let cursor = instagramCollection.find({
 		//date: { $gt: '2018-11-23T20:50:29Z' }
 	}).sort({ date: -1 });
@@ -88,7 +88,8 @@ async function processInstagram({db, locations}) {
 			lon: lon,
 			img: doc.url,
 			text: doc.text,
-			hashtags: hashtags
+			hashtags: hashtags,
+			date: doc.date
 		};
 
 		if (doc.shortcode) {
@@ -106,7 +107,7 @@ async function processInstagram({db, locations}) {
 
 async function processTwitter({db, locations}) {
 	let collection = db.collection('posts');
-	
+
 	let cursor = collection.find({
 		//date: { $gt: '2018-11-23T20:50:29Z' }
 	}).sort({ date: -1 });
