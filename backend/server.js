@@ -8,6 +8,20 @@ const express = require('express');
 
 const app = express();
 
+let badTextWords = [
+	'коррекция', 'заказ', 'производ',
+	'ресни', 'директ', 'сумка',
+	'бронирова', 'проект', 'коллекци',
+	'маникюр', 'cтудия', 'бронь',
+	'direct', 'кератин', 'пиляц',
+	'наличие товаров',
+	'в ?наличии', 'косметика', 'предстоящие праздники',
+	'% скидк', 'педикюр', 'ресниц',
+	'натуральн', 'звоните', 'процедур',
+];
+
+let badTextRegexp = new RegExp(badTextWords.join('|'), 'i');
+
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
@@ -78,6 +92,8 @@ async function processInstagram({db, locations}) {
 		    lon = parseFloat(doc.lon);
 
 		if (!isFinite(lat) || !isFinite(lon)) return;
+
+		if (isBadText(doc.text)) return;
 
 		let hashtags = parseHashTags(doc.text);
 
@@ -217,11 +233,18 @@ function isBadHashTag(tag) {
 	case 'брошиминск':
 	case 'платьенапрокат':
 	case 'татуировкавминске':
+	case 'косметолог':
+	case 'тортыминск':
+	case 'одеяламинск':
 		return true;
 		break;
 	default:
 		return false;
 	}
+}
+
+function isBadText(text) {
+	return badTextRegexp.test(text);
 }
 
 function parseHashTags(text) {

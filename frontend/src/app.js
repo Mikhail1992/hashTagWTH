@@ -115,7 +115,7 @@ onDomReady(function() {
 			heatPoints.push([lat, lon, 0.5]);
 		});
 
-		let heat = L.heatLayer(heatPoints, {radius: 20});
+		let heat = L.heatLayer(heatPoints, {radius: 25});
 
 		heat.addTo(map);
 	})();
