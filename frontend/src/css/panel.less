@@ -1,13 +1,33 @@
 @import 'post-card.less';
 
+img {
+	max-width: 100%;
+	height: auto;
+}
+
 .x-panel {
 	display: flex;
 	flex-direction: column;
 
-	> .title {
+	.head {
+		display: flex;
+    line-height: 0;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+	}
+
+	.logo {
+		display: inline-block;
+		line-height: 0;
+		max-width: 60%;
+	}
+
+	.title {
 		font-size: 18px;
 		color: @black;
 		margin-bottom: 10px;
+		margin-right: 10px;
 	}
 }
 
@@ -26,4 +46,26 @@
 			}
 		}
 	}
+}
+
+.layout {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: #000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	cursor: pointer;
+}
+
+input[type="radio"] {
+	display: none;
+}
+
+input[type="radio"]:checked + .layout {
+	display: none;
 }
