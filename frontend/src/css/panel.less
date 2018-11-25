@@ -60,12 +60,60 @@ img {
 	justify-content: center;
 	z-index: 10000;
 	cursor: pointer;
+	animation: hide-layout 2s forwards;
+}
+
+.layout img {
+	margin-bottom: 20px;
+}
+
+.layout__inner {
+	display: flex;
+	flex-direction: column;
 }
 
 input[type="radio"] {
 	display: none;
 }
 
-input[type="radio"]:checked + .layout {
-	display: none;
+
+.progress-bar {
+	width: 500px;
+	height: 3px;
+	position: relative;
+}
+
+.progress-bar:before {
+	content: '';
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 0;
+	animation: progress 2s ease-in-out forwards;
+	background: #8849c9;
+}
+
+@keyframes progress {
+	0% {
+		width: 0;
+	}
+
+	100% {
+		width: 100%;
+	}
+}
+
+@keyframes hide-layout {
+	0%,
+	99% {
+		opacity: 1;
+		height: 100%;
+	}
+
+	100% {
+		opacity: 0;
+		height: 0;
+	}
 }
