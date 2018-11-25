@@ -1,0 +1,44 @@
+<div class="filters">
+  {{#each filters}}
+    <a href={{this.filter}}>{{this.name}}</a>
+  {{/each}}
+</div>
+<div id="map"></div>
+<script>
+  var map;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 53.904146, lng: 27.554560},
+      zoom: 8
+    });
+  }
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa7hM4grPK-mIfFJvfxwPuSac_yjfhvzc&callback=initMap">
+</script>
+<div class="places">
+  <ul>
+    {{#each data}}
+      <li>
+        {{#if this.name}}
+          Name: {{this.name}}<br>
+        {{/if}}
+        {{#if this.checkins}}
+          Checkins: {{this.checkins}}<br>
+        {{/if}}
+        {{#if this.rating_count}}
+          Rating: {{this.rating_count}}<br>
+        {{/if}}
+        {{#if this.location.street}}
+          Location: {{this.location.street}}<br>
+        {{/if}}
+        {{#if this.overall_star_rating}}
+          Star Rating: {{this.overall_star_rating}}<br>
+        {{/if}}
+        {{#if this.rating_count}}
+          Rating count: {{this.rating_count}}<br>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</div>
