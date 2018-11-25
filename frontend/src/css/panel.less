@@ -1,0 +1,29 @@
+@import 'post-card.less';
+
+.x-panel {
+	display: flex;
+	flex-direction: column;
+
+	> .title {
+		font-size: 18px;
+		color: @black;
+		margin-bottom: 10px;
+	}
+}
+
+.x-panel {
+	> .cards-container {
+		overflow: auto;
+
+		margin-left: -20px;
+		margin-right: -20px;
+
+		padding: 2px 20px 2px 20px;
+
+		> .x-post-card {
+			&:not(:first-child) {
+				margin-top: 10px;
+			}
+		}
+	}
+}

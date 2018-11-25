@@ -1,0 +1,64 @@
+.x-post-card {
+	border-radius: 4px;
+	padding: 10px;
+	box-shadow: 0 0 4px @light-gray;
+
+	> .place-time {
+		display: flex;
+		flex-direction: row;
+
+		margin-bottom: 5px;
+
+		> .place {
+			flex-grow: 1;
+		}
+
+		> .time {
+			flex-shrink: 0;
+			margin-left: 10px;
+			color: @light-gray;
+		}
+	}
+
+	> .content-container {
+		> .photo {
+			display: inline-block;
+			float: right;
+			width: 100px;
+			height: 100px;
+			border-radius: 3px;
+			background: @light-gray;
+		}
+
+		> .author {
+			> .name {
+				color: @light-gray;
+			}
+		}
+
+		> .hashtags {
+			margin-top: 3px;
+
+			> span {
+				display: inline-block;
+
+				background: @black;
+				color: white;
+				padding: 2px 4px;
+				border-radius: 2px;
+
+				margin-bottom: 3px;
+			}
+		}
+
+		> .text {
+			margin-top: 3px;
+		}
+	}
+
+	&:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+}
