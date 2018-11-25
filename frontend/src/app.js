@@ -71,19 +71,41 @@ onDomReady(function() {
 		markers.on('clusterclick', cluster => {
 			let arr = cluster.layer.getAllChildMarkers().map(x => x.__hashTagData);
 
+			arr = arr.slice(0, 100);
+
 			cardsContainerEl.innerHTML = '';
 
-			arr.forEach(function({ img }) {
+			arr.forEach(function({ img, url, text, hashtags }) {
 				let cardEl = instantiateTemplate('main', 'post_card');
 
 				let binding = domBinding(cardEl, {
-					photo: img
+					photo: img,
+					text: text,
+					url: url
 				});
+
+				if (Array.isArray(hashtags) && hashtags.length) {
+					let isFirst = true;
+
+					hashtags.forEach(x => {
+						let el = document.createElement('span');
+						el.textContent = '#' + x;
+
+						binding.hashtagsEl.appendChild(el);
+
+						if (isFirst) isFirst = false;
+						else binding.hashtagsEl.appendChild(document.createTextNode(' '));
+					});
+				} else {
+					binding.hashtagsEl.style.display = 'none';
+				}
 
 				//binding.photoEl.style.backgroundImage = 'url("' + img + '")';
 
 				cardsContainerEl.appendChild(cardEl);
 			});
+
+			cardsContainerEl.scrollTop = 0;
 		});
 
 		let heatPoints = [];
