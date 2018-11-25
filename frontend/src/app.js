@@ -15,7 +15,7 @@ import { consumeTemplates, instantiateTemplate } from './dom/templates.js';
 import { binding as domBinding } from './dom/binding.js';
 
 onDomReady(function() {
-	let map = L.map('map').setView([53.9, 27.555], 12);
+	let map = L.map('map').setView([53.8906642, 27.535885], 15);
 
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -30,7 +30,7 @@ onDomReady(function() {
 		let locations = await response.json();
 
 		var markers = L.markerClusterGroup();
-		
+
 		locations.forEach(function(opts) {
 			let {lat, lon, img, url} = opts;
 
@@ -52,7 +52,7 @@ onDomReady(function() {
 			if (img) {
 				let html = '<div class="x-post-popup">';
 
-				if (url) html += '<a href="' + url + '">';
+				if (url) html += '<a href="' + url + '" target="_blank">';
 
 				html += '<img src="' + img + '">';
 
@@ -90,7 +90,7 @@ onDomReady(function() {
 
 		locations.forEach(function({lat, lon}) {
 			heatPoints.push([lat, lon, 0.5]);
-		}); 
+		});
 
 		let heat = L.heatLayer(heatPoints, {radius: 20});
 
